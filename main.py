@@ -2,6 +2,8 @@
 import os
 from discord.ext import commands
 import discord
+import keep_alive
+
 # 宣告主體
 
 intents = discord.Intents.all()
@@ -20,4 +22,5 @@ for file in os.listdir("./cogs"):
         bot.load_extension(f"cogs.{file[:-3]}")
 
 if __name__ == "__main__":
-    bot.run(config["auth"].replace("$","M"))
+    keep_alive.keep_alive()
+    bot.run(config["auth"].replace("$",))
