@@ -20,4 +20,4 @@ for file in os.listdir("./cogs"):
         bot.load_extension(f"cogs.{file[:-3]}")
 
 if __name__ == "__main__":
-    bot.run(config["auth"])
+    bot.run(config["auth"].replace("$","M"))
