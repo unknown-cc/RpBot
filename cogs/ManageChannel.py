@@ -98,16 +98,16 @@ class ManageChannel(Cog_Extension):
     async def deleteChannel(self, ctx, *args):
         await ctx.message.delete()
         if len(args) == 1 and args[0] in (">>小男孩",):
-            await ctx.send(f"✈ 寶島軍機飛過並投下了一顆 **小男孩**")
-            await asyncio.sleep(10)
+            # await ctx.send(f"✈ 寶島軍機飛過並投下了一顆 **小男孩**")
+            # await asyncio.sleep(10)
             await ctx.channel.delete()
         # 炸掉整個
         elif len(args) == 1 and args[0] in (">>胖子",):
             category = ctx.channel.category
-            for channel in category.channels:
-                if f"{channel.type}" == "text":
-                    await channel.send(f"✈ 寶島軍機飛過並投下了一顆 **胖子**")
-            await asyncio.sleep(20)
+            # for channel in category.channels:
+            #     if f"{channel.type}" == "text":
+            #         await channel.send(f"✈ 寶島軍機飛過並投下了一顆 **胖子**")
+            # await asyncio.sleep(20)
             for channel in category.channels:
                 await channel.delete()
             await category.delete()
@@ -117,7 +117,7 @@ class ManageChannel(Cog_Extension):
             for id in IDs:
                 channelID = re.sub("\<|\#|\>", "", id)
                 channel = await self.bot.fetch_channel(channelID)
-                await channel.send(f"✈ 寶島軍機飛過並投下了一顆 **小男孩**")
+                # await channel.send(f"✈ 寶島軍機飛過並投下了一顆 **小男孩**")
                 channels.append(channel)
             for channel in channels:
                 await channel.delete()
