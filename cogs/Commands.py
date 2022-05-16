@@ -3,9 +3,6 @@ import asyncio
 from discord.utils import get as Get
 from discord.ext import commands
 from core.defalut_cog import Cog_Extension
-import webhook
-from discord_components import Button, Select, SelectOption, ComponentsBot
-from discord_ui import Button
 
 class Commands(Cog_Extension):
 
@@ -68,7 +65,7 @@ class Commands(Cog_Extension):
                 print(emoji)
                 if "$" in emoji:
                     from webhook.use import parseServerEmoji
-                    e = await parseServerEmoji(ctx.guild , emoji)
+                    e = await parseServerEmoji(self.bot , emoji)
             else:
                 e = emoji
             if act in ("add"):
@@ -98,7 +95,7 @@ class Commands(Cog_Extension):
         else:
             username = data[0]
             avatar_url = data[1]
-        text = await parseServerEmoji(ctx.guild , arg)
+        text = await parseServerEmoji(self.bot , arg)
         if not text ==  None:
             if username == "bot":
                 await ctx.send(text)
@@ -108,7 +105,7 @@ class Commands(Cog_Extension):
 
     @commands.command(name="edit_rule",aliases=["erule.exe" , "er.exe"])
     @commands.is_owner()
-    async def edit_rule(self , ctx , * , arg):        
+    async def edit_rule(self , ctx , * , arg):
         from webhook.use import checkWebhook , parseServerEmoji
         messageID = ctx.message.reference.message_id
         if messageID == None :
@@ -116,11 +113,14 @@ class Commands(Cog_Extension):
             await asyncio.sleep(5)            
             await m.delete()
             return
-        message = await ctx.channel.fetch_message(messageID)            
+        message = await ctx.channel.fetch_message(messageID)       
+        content = message.content
         webhook = await checkWebhook(ctx.guild , f"<#{ctx.channel.id}>")
-        text = await parseServerEmoji(ctx.guild , arg)
+        text = await parseServerEmoji(self.bot , arg)
+        print("everyone" , "@everyone" in content)
         
-        
+        if "@everyone" in content:
+            text = "||@everyone||\n" + text
         if not (text == None and arg == ""):
             if webhook.id == message.author.id:
                 await webhook.edit_message(messageID,content=text)
@@ -131,12 +131,16 @@ class Commands(Cog_Extension):
     # 執行
     @commands.command(name="test")
     @commands.is_owner()
-    async def test(self , ctx):
-        r = []
-        roles = await ctx.guild.fetch_roles()
-        for role in roles:
-            print(role.name , role.position)
-        
+    async def test(self , ctx , * , arg):
+        from webhook.use import parseServerEmoji
+        emojis = await parseServerEmoji(self.bot , arg , "emoji")        
+        if not emojis or not type(emojis) == list:
+            return
+        for emoji in emojis:
+            emoji_data = emoji.split(":")
+            emoji_name = emoji_data[1]
+            emoji_id = emoji_data[2][:-1]
+            await ctx.send(content=f"emoji: {emoji}\nname: {emoji_name}\nid: {emoji_id}")
 
 def setup(bot):
     bot.add_cog(Commands(bot))

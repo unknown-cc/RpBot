@@ -63,7 +63,7 @@ async def cloneWebhook(ctx, bot, channelID, args, time=-1):
     pass
 
 
-async def parseServerEmoji(guild , content):    
+async def parseServerEmoji(bot, content, back="text"):
     if not ("$") in content:
         return content
     import re
@@ -71,21 +71,32 @@ async def parseServerEmoji(guild , content):
     emoji_strs = re.findall(emojiRegex, content)
     if len(emoji_strs) == 0:
         return content
-    server_emojis = guild.emojis
+    emojis = []
     found_emoji = False
     text = content
-    for server_emoji in server_emojis:
-        for emoji_str in emoji_strs:
-            if (server_emoji.name) == emoji_str[1:-1]:
-                if (server_emoji.animated):
-                    text = text.replace(
-                        emoji_str, f"<a:{server_emoji.name}:{server_emoji.id}>")
-                else:
-                    text = text.replace(
-                        emoji_str, f"<:{server_emoji.name}:{server_emoji.id}>")
-                found_emoji = True
+    for emoji_str in emoji_strs:
+        is_matched = False
+        for guild in bot.guilds:
+            server_emojis = guild.emojis
+            for server_emoji in server_emojis:
+                if (server_emoji.name) == emoji_str[1:-1]:
+                    if (server_emoji.animated):
+                        emoji = f"<a:{server_emoji.name}:{server_emoji.id}>"
+                        text = text.replace(emoji_str, emoji)
+                        emojis.append(emoji)
+                    else:
+                        emoji = f"<:{server_emoji.name}:{server_emoji.id}>"
+                        text = text.replace(emoji_str, emoji)
+                        emojis.append(emoji)
+                    found_emoji, is_matched = True , True
+            if is_matched:
                 break
+        if is_matched:
+            continue    
     if found_emoji:
-        return text
+        if back == "text":
+            return text
+        elif back == "emoji":
+            return emojis
     else:
-        return None
+        return

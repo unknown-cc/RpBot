@@ -16,11 +16,18 @@ with open('./json/config.json' , 'r' , encoding='utf-8') as file:
     import json
     config = json.load(file)
 
-# 載入 cog
-for file in os.listdir("./cogs"):
-    if file.endswith('.py') :
-        bot.load_extension(f"cogs.{file[:-3]}")
+# 載入 cogs
+for parent , dirs , files in os.walk("./cogs"):
+    if "__" in parent:
+        continue
+    else:
+        for file in files:
+            if file.endswith(".py"):
+                parent_fix = parent[2:].replace("\\",".")
+                print(f"{parent_fix}.{file[:-3]}")
+                bot.load_extension(f"{parent_fix}.{file[:-3]}")
+
 
 if __name__ == "__main__":
-    keep_alive.keep_alive()
+    # keep_alive.keep_alive()
     bot.run(config["auth"].replace("$","M"))
