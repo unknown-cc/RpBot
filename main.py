@@ -29,5 +29,5 @@ for parent , dirs , files in os.walk("./cogs"):
 
 
 if __name__ == "__main__":
-    # keep_alive.keep_alive()
+    keep_alive.keep_alive()
     bot.run(config["auth"].replace("$","M"))

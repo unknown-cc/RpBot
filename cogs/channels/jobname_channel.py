@@ -1,6 +1,5 @@
 
 import asyncio
-from tkinter import E
 import discord
 from discord.ext import commands
 from core.defalut_cog import Cog_Extension
