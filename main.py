@@ -23,7 +23,7 @@ for parent , dirs , files in os.walk("./cogs"):
     else:
         for file in files:
             if file.endswith(".py"):
-                parent_fix = parent[2:].replace("\\",".")
+                parent_fix = parent[2:].replace("\\",".").replace("/",".")
                 print(f"{parent_fix}.{file[:-3]}")
                 bot.load_extension(f"{parent_fix}.{file[:-3]}")
 

@@ -16,10 +16,10 @@ async def manage_cog(bot, ctx, act, extension):
     for parent, dirname, filename in os.walk("./cogs"):
         if parent.endswith(extension):
             for file in filename:
-                parent_fix = parent[2:].replace("\\", ".")
+                parent_fix = parent[2:].replace("\\", ".").replace("/",".")
                 files.append(f"{parent_fix}.{file[:-3]}")
         elif f"{extension}.py" in filename:
-            parent_fix = parent[2:].replace("\\", ".")
+            parent_fix = parent[2:].replace("\\", ".").replace("/",".")
             files.append(f"{parent_fix}.{extension}")
     for file in files:
         if act == "load":
