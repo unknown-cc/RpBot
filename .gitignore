@@ -1,3 +1,7 @@
 test.py
 test2.py
 readme.txt
+boot
+db
+json/credentials.json
+globals.py

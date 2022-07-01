@@ -5,7 +5,7 @@ from core.defalut_cog import Cog_Extension
 from discord_components import Button, ButtonStyle , Interaction
 from permissions.roles import gov_roles, leader_roles, manager_roles , check_perms
 
-job_emoji = ("👮", "🚑", "🚗", "📷")
+#job_emoji = ("👮", "🚑", "🚗", "📷")
 
 class role_channel(Cog_Extension):
     @commands.Cog.listener("on_message")
@@ -20,7 +20,7 @@ class role_channel(Cog_Extension):
                 return
             # 確認頻道ID
             rerole_channel_id = 972013196628070400
-            if not channel.id == rerole_channel_id:
+            if not (channel.id == rerole_channel_id or channel.id == 965941281366868028):
                 return
             if ">>" in content:
                 return
@@ -100,19 +100,20 @@ class role_channel(Cog_Extension):
                 })
             # 完成表情
             check_emoji = "<a:check3:972097575274553464>"
-            text_member = f"成員："            
+            text_member = f"成員："      
+            # 開始修改身分組
             for member in target_members:
                 text_member = text_member + f"<@{member.id}> "
                 for role in target_roles:
                     if act == "add":
                         await member.add_roles(role, atomic=True)
                     elif act == "remove":
+                        
                         await member.remove_roles(role, atomic=True)
             # 身分組完成訊息
             text_role = f"身分組："
             for role in target_roles:
                 text_role = text_role + f"<@&{role.id}> "
-            # 開始修改身分組
             if act == "add":
                 text = text_member + "已新增" + text_role
             elif act == "remove":
@@ -131,9 +132,11 @@ class role_channel(Cog_Extension):
                 ambulance = Button(label="醫護局",style=ButtonStyle.grey,custom_id="ambulance")
                 mechanic = Button(label="車業",style=ButtonStyle.grey,custom_id="mechanic")
                 newser = Button(label="新聞局",style=ButtonStyle.grey,custom_id="newser")
-                black1 = Button(label="黑幫1",style=ButtonStyle.grey,custom_id="black1")
-                black2 = Button(label="黑幫2",style=ButtonStyle.grey,custom_id="black2")
-                components = [[game_admin,plan_admin,dc_admin,goverment],[employed,police,ambulance,mechanic,newser],[black1,black2]]
+                black1 = Button(label="竹聯幫",style=ButtonStyle.grey,custom_id="black1")
+                black2 = Button(label="罪惡堂",style=ButtonStyle.grey,custom_id="black2")
+                black3 = Button(label="Joker",style=ButtonStyle.grey,custom_id="black3")
+                black4 = Button(label="黑幫4",style=ButtonStyle.grey,custom_id="black4")
+                components = [[game_admin,plan_admin,dc_admin,goverment],[employed,police,ambulance,mechanic,newser],[black1,black2,black3,black4]]
             else:
                 job_emoji = author.nick[:1]
                 for target in target_members:
@@ -223,8 +226,12 @@ class role_channel(Cog_Extension):
         elif job == "newser":
             job_emoji = "📷"
         elif job == "black1":
-            job_emoji = "❓"
+            job_emoji = "🎋"
         elif job == "black2":
+            job_emoji = "👺"
+        elif job == "black3":
+            job_emoji = "🤡"
+        elif job == "black4":
             job_emoji = "❓"
         if job_emoji:
             mentions = ref_message.mentions

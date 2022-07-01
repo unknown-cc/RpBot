@@ -2,7 +2,8 @@
 import os
 from discord.ext import commands
 import discord
-
+from boot.database_job_cooldown import load_job_change_cooldown_data
+import globals
 # 宣告主體
 
 intents = discord.Intents.all()
@@ -25,7 +26,6 @@ for parent , dirs , files in os.walk("./cogs"):
                 parent_fix = parent[2:].replace("\\",".").replace("/",".")
                 print(f"{parent_fix}.{file[:-3]}")
                 bot.load_extension(f"{parent_fix}.{file[:-3]}")
-
 
 if __name__ == "__main__":
     
